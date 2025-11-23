@@ -1,37 +1,44 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
 import { UserDTO } from "@/common/entities/user";
-import { SignUpForm, SignUpFormSchema } from "@/validations/signUp";
+import InputField from "@/components/InputField/inputField";
+import { Button } from "@/components/ui/button";
+import { SignUp2Form, SignUp2FormSchema } from "@/validations/signUp2";
 
-import InputField from "../InputField/inputField";
-import { Button } from "../ui/button";
-
-export default function StepOne({
-  setCurrentStep,
-  setUserData
+export default function StepTwo({
+  setUserData,
+  setCurrentStep
 }: {
-  setCurrentStep: (step: number) => void;
   setUserData: (data: Partial<UserDTO>) => void;
+  setCurrentStep: (step: number) => void;
 }) {
   const {
     register,
     handleSubmit,
     formState: { errors, isValid }
-  } = useForm<SignUpForm>({
+  } = useForm<SignUp2Form>({
     mode: "all",
     criteriaMode: "all",
-    resolver: zodResolver(SignUpFormSchema)
+    resolver: zodResolver(SignUp2FormSchema)
   });
 
-  const onSubmit = (data: SignUpForm) => {
+  const onSubmit = (data: SignUp2Form) => {
     const userDTO: Partial<UserDTO> = {
-      ...data,
-      originApplication: 2
+      alias: data.alias,
+      name: data.name,
+      cnpj: data.cnpj,
+      email: data.email,
+      password: data.password,
+      userType: 2,
+      chargeTaxFee: parseFloat(data.chargeTaxFee),
+      annualRevenue: parseFloat(data.annualRevenue)
     };
     setUserData(userDTO);
-    setCurrentStep(2);
+    setCurrentStep(3);
   };
 
   return (
@@ -41,54 +48,69 @@ export default function StepOne({
     >
       <div className="ml-2 flex flex-col items-start gap-0">
         <h4 className="h-8 text-3xl font-extrabold text-[#56381C]">
-          Cadastro do
+          Cadastro da
         </h4>
         <h4 className="h-10 text-4xl font-extralight text-[#AD4C24] italic">
-          responsável
-        </h4>
-        <h4 className="h-8 text-3xl font-extrabold text-[#56381C]">
-          pela cafeteria
+          sua cafeteria
         </h4>
       </div>
       <InputField
-        name="responsibleName"
+        name="alias"
         register={register}
-        label="Nome e sobrenome"
-        required
+        label="Apelido da cafeteria"
         formErrors={errors}
-        placeholder="Nome e sobrenome"
+        required
+        placeholder="Ex: cafe-do-mar"
       />
       <InputField
-        name="responsibleEmail"
+        name="name"
         register={register}
-        required
+        label="Nome da cafeteria"
         formErrors={errors}
-        label="Email"
-        placeholder="Email"
+        required
+        placeholder="Ex: Café do Mar LTDA"
       />
       <InputField
-        name="responsiblePhone"
+        name="cnpj"
         register={register}
-        label="Celular"
+        label="CNPJ"
         formErrors={errors}
         required
-        placeholder="DDD + celular"
+        mask="99.999.999/9999-99"
+        placeholder="CNPJ (somente números)"
       />
       <InputField
-        name="responsibleCPF"
+        name="email"
         register={register}
-        label="CPF"
+        label="Email da cafeteria"
         formErrors={errors}
         required
-        placeholder="CPF (somente números)"
+        placeholder="Email da cafeteria"
       />
       <InputField
-        name="dateOfBirth"
-        formErrors={errors}
+        name="password"
         register={register}
+        label="Senha"
+        formErrors={errors}
         required
-        label="Data de Nascimento"
-        placeholder="Data de nascimento (DD/MM/AAAA)"
+        placeholder="Senha"
+        type="password"
+      />
+      <InputField
+        name="chargeTaxFee"
+        register={register}
+        label="Taxa de cobrança"
+        formErrors={errors}
+        required
+        placeholder="Ex: 0.10"
+      />
+      <InputField
+        name="annualRevenue"
+        register={register}
+        label="Receita anual"
+        formErrors={errors}
+        required
+        placeholder="Ex: 1200000"
       />
       <div className="flex flex-col gap-3">
         <Button disabled={!isValid} type="submit" className="mt-4">

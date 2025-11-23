@@ -1,24 +1,30 @@
 import { z } from "zod";
 
 export const SignUp2FormSchema = z.object({
-  cafeteriaName: z
+  alias: z
     .string()
-    .min(1, { message: "O nome da cafeteria é obrigatório." }),
+    .min(1, { message: "O apelido da cafeteria é obrigatório." }),
 
-  cafeteriaEmail: z
+  name: z.string().min(1, { message: "O nome da cafeteria é obrigatório." }),
+
+  cnpj: z.string().min(1, { message: "O CNPJ é obrigatório." }),
+
+  email: z
     .string()
     .min(1, { message: "O email da cafeteria é obrigatório." })
     .email({ message: "Insira um formato de email válido." }),
 
-  cafeteriaPhone: z
+  password: z
     .string()
-    .min(1, { message: "O celular da cafeteria é obrigatório." }),
+    .min(6, { message: "A senha deve ter no mínimo 6 caracteres." }),
 
-  cnpj: z.string().min(1, { message: "O CNPJ é obrigatório." }),
-
-  corporateReason: z
+  chargeTaxFee: z
     .string()
-    .min(1, { message: "A razão social é obrigatória." })
+    .min(1, { message: "A taxa de cobrança é obrigatória." }),
+
+  annualRevenue: z
+    .string()
+    .min(1, { message: "A receita anual é obrigatória." })
 });
 
 export type SignUp2Form = z.infer<typeof SignUp2FormSchema>;

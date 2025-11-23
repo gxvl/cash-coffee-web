@@ -7,16 +7,20 @@ export const SignUpFormSchema = z.object({
 
   responsibleEmail: z
     .string()
-    .min(1, { message: "O email é obrigatório." }) // Primeiro checa se está vazio
-    .email({ message: "Insira um formato de email válido." }), // Depois checa o formato
+    .min(1, { message: "O email é obrigatório." })
+    .email({ message: "Insira um formato de email válido." }),
 
   responsiblePhone: z.string().min(1, { message: "O celular é obrigatório." }),
 
   responsibleCPF: z.string().min(1, { message: "O CPF é obrigatório." }),
 
-  dateOfBirth: z
+  responsibleOccupation: z
     .string()
-    .min(1, { message: "A data de nascimento é obrigatória." })
+    .min(1, { message: "A ocupação é obrigatória." }),
+
+  responsibleMonthlyIncome: z
+    .string()
+    .min(1, { message: "A renda mensal é obrigatória." })
 });
 
 export type SignUpForm = z.infer<typeof SignUpFormSchema>;

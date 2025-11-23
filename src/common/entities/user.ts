@@ -8,7 +8,8 @@ export interface UserEntity {
   phoneInternational: string;
   phoneDDD: string;
   phoneNumber: string;
-  cnpj: string | null;
+  cnpj: string;
+  cpf: string;
   address: {
     street: string;
     number: string;
@@ -21,12 +22,16 @@ export interface UserEntity {
     longitude: number;
   };
   isBarista: boolean;
+  isAmbassador: boolean;
   chargeTaxFee: number;
-  dateOfBirth?: string;
-  responsibleName?: string;
-  responsibleCPF?: string;
-  responsiblePhone?: string;
-  responsibleEmail?: string;
+  dateOfBirth: string;
+  responsibleName: string;
+  responsibleCPF: string;
+  responsiblePhone: string;
+  responsibleEmail: string;
+  responsibleOccupation: string;
+  responsibleMonthlyIncome: number;
+  annualRevenue: number;
   bankAccount: {
     bankCode: string;
     bankBranchNumber: string;
@@ -34,15 +39,15 @@ export interface UserEntity {
     bankAccountNumber: string;
     bankAccountCheckDigit: string;
     bankAccountType: string;
-    pixKey?: string;
+    pixKey: string;
   };
-  transferSettings?: {
+  transferSettings: {
     transferEnabled: boolean;
     transferInterval: string;
     transferDay: number;
     transferStatementDescriptor: string;
   };
-  automaticAnticipationSettings?: {
+  automaticAnticipationSettings: {
     autoAnticipationEnabled: boolean;
     autoAnticipationType: string;
     autoAnticipationVolumePercentage: number;
@@ -62,7 +67,8 @@ export const nullUserData: UserDTO = {
   phoneInternational: "",
   phoneDDD: "",
   phoneNumber: "",
-  cnpj: null,
+  cnpj: "",
+  cpf: "",
   address: {
     street: "",
     number: "",
@@ -75,12 +81,16 @@ export const nullUserData: UserDTO = {
     longitude: 0
   },
   isBarista: false,
+  isAmbassador: false,
   chargeTaxFee: 0,
   dateOfBirth: "",
   responsibleName: "",
   responsibleCPF: "",
   responsiblePhone: "",
   responsibleEmail: "",
+  responsibleOccupation: "",
+  responsibleMonthlyIncome: 0,
+  annualRevenue: 0,
   bankAccount: {
     bankCode: "",
     bankBranchNumber: "",
@@ -91,15 +101,15 @@ export const nullUserData: UserDTO = {
     pixKey: ""
   },
   transferSettings: {
-    transferEnabled: false,
-    transferInterval: "",
-    transferDay: 0,
+    transferEnabled: true,
+    transferInterval: "Monthly",
+    transferDay: 10,
     transferStatementDescriptor: ""
   },
   automaticAnticipationSettings: {
-    autoAnticipationEnabled: false,
-    autoAnticipationType: "",
-    autoAnticipationVolumePercentage: 0,
-    autoAnticipationDelay: 2
+    autoAnticipationEnabled: true,
+    autoAnticipationType: "Full",
+    autoAnticipationVolumePercentage: 85,
+    autoAnticipationDelay: 14
   }
 };

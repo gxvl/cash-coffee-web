@@ -6,10 +6,11 @@ import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { nullUserData, UserDTO } from "@/common/entities/user";
-import StepFour from "@/components/StepFour/stepFour";
-import StepOne from "@/components/StepOne/stepOne";
-import StepThree from "@/components/StepThree/stepThree";
-import StepTwo from "@/components/StepTwo/stepTwo";
+import StepFive from "@/components/registerSteps/StepFive/stepFive";
+import StepFour from "@/components/registerSteps/StepFour/stepFour";
+import StepOne from "@/components/registerSteps/StepOne/stepOne";
+import StepThree from "@/components/registerSteps/StepThree/stepThree";
+import StepTwo from "@/components/registerSteps/StepTwo/stepTwo";
 
 export default function Register() {
   const router = useRouter();
@@ -18,8 +19,8 @@ export default function Register() {
 
   const updateUserData = (newData: Partial<UserDTO>) => {
     setUserData((previousData) => ({
-      ...previousData, // Mantém os dados dos passos anteriores
-      ...newData // Adiciona os novos dados
+      ...previousData,
+      ...newData
     }));
   };
 
@@ -52,6 +53,12 @@ export default function Register() {
       )}
       {currentStep === 4 && (
         <StepFour
+          setUserData={updateUserData}
+          setCurrentStep={setCurrentStep}
+        />
+      )}
+      {currentStep === 5 && (
+        <StepFive
           setUserData={updateUserData}
           setCurrentStep={setCurrentStep}
           userData={userData}
