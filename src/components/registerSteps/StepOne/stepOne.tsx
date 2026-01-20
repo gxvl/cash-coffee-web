@@ -33,15 +33,15 @@ export default function StepOne({
 
   const onSubmit = (data: SignUpForm) => {
     const userDTO: Partial<UserDTO> = {
-      responsibleName: data.responsibleName,
-      responsibleCPF: unmaskCPF(data.responsibleCPF),
-      responsiblePhone: data.responsiblePhone,
-      responsibleEmail: data.responsibleEmail,
-      responsibleOccupation: data.responsibleOccupation,
-      responsibleMonthlyIncome: parseFloat(data.responsibleMonthlyIncome),
-      originApplication: 2,
-      isBarista: false,
-      isAmbassador: false
+      ResponsibleName: data.responsibleName,
+      ResponsibleCPF: unmaskCPF(data.responsibleCPF),
+      ResponsiblePhone: data.responsiblePhone,
+      ResponsibleEmail: data.responsibleEmail,
+      ResponsibleOccupation: data.responsibleOccupation,
+      ResponsibleMonthlyIncome: parseFloat(data.responsibleMonthlyIncome),
+      OriginApplication: 2,
+      IsBarista: false,
+      IsAmbassador: false
     };
     setUserData(userDTO);
     setCurrentStep(2);

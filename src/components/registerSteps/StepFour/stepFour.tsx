@@ -45,7 +45,6 @@ export default function StepFour({
 
   const handleCepBlur = async () => {
     const cep = watch("cep");
-    console.log(cep);
     if (!cep) return;
 
     const cleanCep = cep.replace(/\D/g, "");
@@ -56,7 +55,6 @@ export default function StepFour({
       const response = await fetch(
         `https://viacep.com.br/ws/${cleanCep}/json/`
       );
-      console.log(response);
       const data: ViaCEPResponse = await response.json();
 
       if (data.erro) {
@@ -89,16 +87,16 @@ export default function StepFour({
 
   const onSubmit = (data: AddressForm) => {
     const userDTO: Partial<UserDTO> = {
-      address: {
-        street: data.street,
-        number: data.number,
-        complement: data.complement || "",
-        neighborhood: data.neighborhood,
-        city: data.city,
-        state: data.uf,
-        zipCode: data.cep,
-        latitude: -23.561414,
-        longitude: -46.655881
+      Address: {
+        Street: data.street,
+        Number: data.number,
+        Complement: data.complement || "",
+        Neighborhood: data.neighborhood,
+        City: data.city,
+        State: data.uf,
+        ZipCode: data.cep,
+        Latitude: -23.561414,
+        Longitude: -46.655881
       }
     };
     setUserData(userDTO);

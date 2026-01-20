@@ -43,14 +43,14 @@ export default function StepFive({
   const onSubmit = async (data: BankAccountForm) => {
     setLoading(true);
     const userDTO: Partial<UserDTO> = {
-      bankAccount: {
-        bankCode: data.bankCode,
-        bankBranchNumber: data.bankBranchNumber,
-        bankBranchCheckDigit: data.bankBranchCheckDigit,
-        bankAccountNumber: data.bankAccountNumber,
-        bankAccountCheckDigit: data.bankAccountCheckDigit,
-        bankAccountType: data.bankAccountType,
-        pixKey: data.pixKey ?? ""
+      BankAccount: {
+        BankCode: data.bankCode,
+        BankBranchNumber: data.bankBranchNumber,
+        BankBranchCheckDigit: data.bankBranchCheckDigit,
+        BankAccountNumber: data.bankAccountNumber,
+        BankAccountCheckDigit: data.bankAccountCheckDigit,
+        BankAccountType: data.bankAccountType,
+        PixKey: data.pixKey ?? ""
       }
     };
 
@@ -60,17 +60,17 @@ export default function StepFive({
       dateOfBirth: "",
       cpf: "",
       address: {
-        ...userData.address,
+        ...userData.Address,
         latitude: -23.561414,
         longitude: -46.655881
       },
       transferSettings: {
-        ...userData.transferSettings,
-        transferStatementDescriptor: `CASHCOFFEE*${userData.alias.toUpperCase()}`
+        ...userData.TransferSettings,
+        transferStatementDescriptor: `CASHCOFFEE*${userData.Alias.toUpperCase()}`
       },
       bankAccount: {
-        ...userDTO.bankAccount!,
-        pixKey: data.pixKey || ""
+        ...userDTO.BankAccount!,
+        PixKey: data.pixKey || ""
       }
     };
 

@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/context/authContext";
+import ReactQueryProvider from "@/providers/ReactQueryProvider";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -23,12 +24,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <AuthProvider>
-        <body className={`${roboto.variable} h-full w-full antialiased`}>
-          <main>{children}</main>
-          <Toaster />
-        </body>
-      </AuthProvider>
+      <body className={`${roboto.variable} h-full w-full antialiased`}>
+        {/* Providers must reside inside the body */}
+        <AuthProvider>
+          <ReactQueryProvider>
+            <main>{children}</main>
+            <Toaster />
+          </ReactQueryProvider>
+        </AuthProvider>
+      </body>
     </html>
   );
 }

@@ -4,7 +4,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { LoginCredentials, RawLoginApiResponse } from "@/services/auth";
+import { LoginCredentials, RawAPIResponse } from "@/services/auth";
 import { authServiceLogin } from "@/services/userService";
 
 import api from "../services/api";
@@ -12,7 +12,7 @@ import api from "../services/api";
 interface AuthContextType {
   authToken: string | null;
   isAuthenticated: boolean;
-  login: (credentials: LoginCredentials) => Promise<RawLoginApiResponse>;
+  login: (credentials: LoginCredentials) => Promise<RawAPIResponse>;
   logout: () => void;
   loading: boolean;
 }
@@ -33,14 +33,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       const response = await authServiceLogin(credentials);
 
       const responseData = JSON.parse(response.data.data);
+      console.log(responseData);
 
       const token = responseData.AccessToken;
+      const userId = responseData.UserId;
 
       if (!token) {
         throw new Error("Token não encontrado na resposta da API.");
       }
 
       localStorage.setItem("authToken", token);
+      localStorage.setItem("userId", userId);
       setAuthToken(token);
 
       api.defaults.headers.common.Authorization = `Bearer ${token}`;
@@ -58,6 +61,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   // Função para lidar com o logout
   const logout = () => {
     localStorage.removeItem("authToken");
+    localStorage.removeItem("userId");
     setAuthToken(null);
     delete api.defaults.headers.common.Authorization;
     router.push("/login"); // Redireciona para a página de login

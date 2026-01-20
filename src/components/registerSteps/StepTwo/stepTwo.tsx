@@ -28,14 +28,14 @@ export default function StepTwo({
 
   const onSubmit = (data: SignUp2Form) => {
     const userDTO: Partial<UserDTO> = {
-      alias: data.alias,
-      name: data.name,
-      cnpj: data.cnpj,
-      email: data.email,
-      password: data.password,
-      userType: 2,
-      chargeTaxFee: parseFloat(data.chargeTaxFee),
-      annualRevenue: parseFloat(data.annualRevenue)
+      Alias: data.alias,
+      Name: data.name,
+      CNPJ: data.cnpj,
+      Email: data.email,
+      Password: data.password,
+      UserType: 2,
+      ChargeTaxFee: parseFloat(data.chargeTaxFee),
+      AnnualRevenue: parseFloat(data.annualRevenue)
     };
     setUserData(userDTO);
     setCurrentStep(3);

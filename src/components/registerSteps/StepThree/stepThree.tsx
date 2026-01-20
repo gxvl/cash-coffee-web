@@ -33,9 +33,9 @@ export default function StepThree({
     const number = phoneWithDDD.substring(2);
 
     const userDTO: Partial<UserDTO> = {
-      phoneInternational: data.phoneInternational,
-      phoneDDD: ddd,
-      phoneNumber: number
+      PhoneInternational: data.phoneInternational,
+      PhoneDDD: ddd,
+      PhoneNumber: number
     };
     setUserData(userDTO);
     setCurrentStep(4);

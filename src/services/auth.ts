@@ -13,9 +13,7 @@ interface ApiResponse<T> {
 
 interface LoginData {
   accessToken: string;
-  // A API pode retornar outros dados aqui, como as info do usuário, mas vamos
-  // focar no token por enquanto, já que é o que você mencionou.
-  // Você pode adicionar: user: UserEntity; se a sua API retornar isso.
+  userId: string;
 }
 
 // A resposta de login completa

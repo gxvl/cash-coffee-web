@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-import { ConfirmationModal } from "@/components/confirmationModal/confirmationModal";
+import LoadingComponent from "@/components/LoadingComponent/loading";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -14,83 +15,95 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
+import { useGetAllUserCategories } from "@/hooks/queries/useGetAllUserCategories";
+import { useGetAllUserProducts } from "@/hooks/queries/useGetAllUserProducts";
 
 export default function MenuPage() {
   const [filter, setFilter] = useState("all");
-  const items = [
-    { id: 1, name: "Café Gelado", category: "coffee" },
-    { id: 2, name: "Bolo de Chocolate", category: "sweets" },
-    { id: 3, name: "Suco de Laranja", category: "beverages" },
-    { id: 4, name: "Cappuccino", category: "coffee" },
-    { id: 5, name: "Torta de Limão", category: "sweets" },
-    { id: 6, name: "Chá Gelado", category: "beverages" },
-    { id: 7, name: "Brownie", category: "sweets" },
-    { id: 8, name: "Latte", category: "coffee" },
-    { id: 9, name: "Água com Gás", category: "beverages" },
-    { id: 10, name: "Muffin de Mirtilo", category: "sweets" },
-    { id: 11, name: "Espresso", category: "coffee" },
-    { id: 12, name: "Croissant", category: "sweets" },
-    { id: 13, name: "Refrigerante", category: "beverages" },
-    { id: 14, name: "Mocha", category: "coffee" },
-    { id: 15, name: "Pudim", category: "sweets" },
-    { id: 16, name: "Chá Quente", category: "beverages" },
-    { id: 17, name: "Affogato", category: "coffee" },
-    { id: 18, name: "Brigadeiro", category: "sweets" },
-    { id: 19, name: "Smoothie de Morango", category: "beverages" },
-    { id: 20, name: "Macchiato", category: "coffee" },
-    { id: 21, name: "Cookie de Chocolate", category: "sweets" },
-    { id: 22, name: "Água Mineral", category: "beverages" },
-    { id: 23, name: "Café com Leite", category: "coffee" },
-    { id: 24, name: "Cheesecake", category: "sweets" },
-    { id: 25, name: "Chá de Hibisco", category: "beverages" },
-    { id: 26, name: "Ristretto", category: "coffee" },
-    { id: 27, name: "Palha Italiana", category: "sweets" },
-    { id: 28, name: "Suco de Uva", category: "beverages" },
-    { id: 29, name: "Americano", category: "coffee" },
-    { id: 30, name: "Donut", category: "sweets" },
-    { id: 31, name: "Chá de Camomila", category: "beverages" },
-    { id: 32, name: "Café Turco", category: "coffee" },
-    { id: 33, name: "Torta de Maçã", category: "sweets" },
-    { id: 34, name: "Suco Detox", category: "beverages" },
-    { id: 35, name: "Café Vienense", category: "coffee" },
-    { id: 36, name: "Pão de Mel", category: "sweets" },
-    { id: 37, name: "Chá Verde", category: "beverages" },
-    { id: 38, name: "Café Irlandês", category: "coffee" },
-    { id: 39, name: "Quindim", category: "sweets" },
-    { id: 40, name: "Milkshake de Chocolate", category: "beverages" }
-  ];
+
+  const [userId, setUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("userId");
+    if (stored) setUserId(stored);
+  }, []);
+
+  const { data: productList, isLoading: loadingProducts } =
+    useGetAllUserProducts(userId || "", true);
+
+  const { data: categoriesList, isLoading: loadingCategories } =
+    useGetAllUserCategories(userId || "");
 
   const router = useRouter();
 
   return (
     <main className="relative flex h-screen flex-col items-center justify-start px-10 pt-12">
-      <Select value={filter} onValueChange={setFilter}>
-        <SelectTrigger className="w-full rounded-xl border-[#54361A] py-6 text-lg">
-          <SelectValue placeholder="Theme" />
-        </SelectTrigger>
-        <SelectContent className="text-lg">
-          <SelectItem value="all">Todo o cardápio</SelectItem>
-          <SelectItem value="sweets">Doces</SelectItem>
-          <SelectItem value="coffee">Café</SelectItem>
-          <SelectItem value="beverages">Bebidas</SelectItem>
-        </SelectContent>
-      </Select>
-      <div className="flex w-full flex-col gap-2 pb-44">
-        {items
-          .filter((item) => filter === "all" || item.category === filter)
-          .map((item) => (
-            <div
-              className="flex w-full justify-between border-b border-[#8a4f18] py-4"
-              key={item.id}
-            >
-              <div className="flex items-center gap-4">
-                <Checkbox className="h-5 w-5" />
-                <span className="text-base">{item.name}</span>
-              </div>
-              <ConfirmationModal title="Tem certeza que deseja retirar o item do cardápio?" />
-            </div>
-          ))}
-      </div>
+      <ChevronLeft
+        onClick={() => {
+          router.back();
+        }}
+        className="absolute top-4 left-4 h-8 w-8 cursor-pointer text-[#AD4C24]"
+        strokeWidth={4}
+      />
+      {loadingCategories ? (
+        <div className="mt-5 flex w-full items-center justify-center">
+          <LoadingComponent />
+        </div>
+      ) : (
+        <Select value={filter} onValueChange={setFilter}>
+          <SelectTrigger className="mt-5 w-full rounded-xl border-[#54361A] py-6 text-lg">
+            <SelectValue placeholder="Selecione uma categoria" />
+          </SelectTrigger>
+          <SelectContent className="text-lg">
+            <SelectItem value="all">Todo o cardápio</SelectItem>
+            {categoriesList &&
+              categoriesList.map((category) => (
+                <SelectItem key={category.id} value={category.id}>
+                  {category.name}
+                </SelectItem>
+              ))}
+          </SelectContent>
+        </Select>
+      )}
+      {loadingProducts ? (
+        <div className="mt-5 flex w-full items-center justify-center">
+          <LoadingComponent />
+        </div>
+      ) : productList && productList.length === 0 ? (
+        <div className="mt-10 flex w-full flex-col items-center justify-center gap-2">
+          <p className="text-center text-lg text-gray-500">
+            Sem produtos cadastrados
+          </p>
+          <p className="text-center text-sm text-gray-400">
+            Clique em &quot;Cadastrar produto&quot; para adicionar o primeiro
+            produto ao seu menu
+          </p>
+        </div>
+      ) : (
+        <div className="flex w-full flex-col gap-2 pb-44">
+          {productList &&
+            productList
+              .filter((item) => filter === "all" || item.categoryId === filter)
+              .map((item) => (
+                <div
+                  className="flex w-full justify-between border-b border-[#8a4f18] py-4"
+                  key={item.id}
+                >
+                  <div className="flex items-center gap-4">
+                    <Checkbox className="h-5 w-5" />
+                    <span className="text-base">{item.name}</span>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => router.push(`/menu/edit-product/${item.id}`)}
+                  >
+                    Editar
+                  </Button>
+                </div>
+              ))}
+        </div>
+      )}
       <div className="fixed bottom-0 flex h-[20vh] w-full justify-center gap-2 py-4 backdrop-blur-md">
         <Button onClick={() => router.push("/menu/create-product")}>
           Cadastrar produto

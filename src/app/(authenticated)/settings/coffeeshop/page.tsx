@@ -10,21 +10,21 @@ export default function CoffeeshopSettingsPage() {
   const router = useRouter();
 
   return (
-    <main className="flex h-full w-full flex-col gap-4 bg-[#B45326] px-10 pt-12 pb-28">
+    <main className="flex h-full w-full flex-col gap-4 bg-white px-10 pt-12 pb-28">
       {/* Header */}
       <div className="flex flex-col">
         <ChevronLeft
-          onClick={() => router.back()}
-          className="h-6 w-6 cursor-pointer text-white"
+          onClick={() => router.push("/home")}
+          className="h-6 w-6 cursor-pointer text-[#B45326]"
           strokeWidth={4}
         />
-        <p className="w-full text-center text-2xl font-semibold text-white">
+        <p className="w-full text-center text-2xl font-semibold text-[#B45326]">
           Meu cadastro
         </p>
       </div>
 
       {/* Navigation Tabs */}
-      <div className="div h-16 w-full rounded-full">
+      <div className="div h-16 w-full rounded-full border-2">
         <div className="flex h-full w-full items-center rounded-full">
           <Link href="/settings/user" className="flex h-full flex-1">
             <div
