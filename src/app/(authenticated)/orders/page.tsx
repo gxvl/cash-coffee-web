@@ -25,7 +25,6 @@ export default function OrdersPage() {
   const { mutate: finishOrderMutate, isPending: finishingOrder } =
     useFinishOrder();
 
-
   useEffect(() => {
     const stored = localStorage.getItem("userId");
     if (stored) setUserId(stored);

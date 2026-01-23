@@ -42,6 +42,7 @@ export default function LoginPage() {
       toast.success(
         ToastDealer(response.message) || "Você será redirecionado em breve."
       );
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(
         error.response?.data?.Message ||

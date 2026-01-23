@@ -130,6 +130,7 @@ const Step3EnterCode = ({
 }: StepProps & { userEmail: string }) => {
   const [code, setCode] = useState("");
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit = async (data: CodeForm) => {
     try {
       const response = await ValidateCode(userEmail, Number(code));
