@@ -5,19 +5,12 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { UserDTO } from "@/common/entities/user";
 import InputField from "@/components/InputField/inputField";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "@/components/ui/select";
 import { createUser } from "@/services/userService";
 import {
   BankAccountForm,
@@ -40,8 +33,7 @@ export default function StepFive({
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
-    control
+    formState: { errors, isValid }
   } = useForm<BankAccountForm>({
     mode: "all",
     criteriaMode: "all",
@@ -50,13 +42,6 @@ export default function StepFive({
 
   const onSubmit = async (data: BankAccountForm) => {
     setLoading(true);
-
-    // Converte tipo de conta de português para inglês
-    const accountTypeMap: { [key: string]: string } = {
-      Corrente: "Checking",
-      Poupança: "Savings"
-    };
-
     const userDTO: Partial<UserDTO> = {
       BankAccount: {
         BankCode: data.bankCode,
@@ -64,8 +49,7 @@ export default function StepFive({
         BankBranchCheckDigit: data.bankBranchCheckDigit,
         BankAccountNumber: data.bankAccountNumber,
         BankAccountCheckDigit: data.bankAccountCheckDigit,
-        BankAccountType:
-          accountTypeMap[data.bankAccountType] || data.bankAccountType,
+        BankAccountType: data.bankAccountType,
         PixKey: data.pixKey ?? ""
       }
     };
@@ -187,31 +171,14 @@ export default function StepFive({
           placeholder="Dígito"
         />
       </div>
-      <div className="flex flex-col gap-1">
-        <label className="text-sm font-normal">
-          Tipo de Conta <span className="text-red-500">*</span>
-        </label>
-        <Controller
-          name="bankAccountType"
-          control={control}
-          render={({ field }) => (
-            <Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger className="h-11 rounded-[10px] border-[#AD4C24] text-base">
-                <SelectValue placeholder="Selecione o tipo de conta" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Corrente">Conta Corrente</SelectItem>
-                <SelectItem value="Poupança">Conta Poupança</SelectItem>
-              </SelectContent>
-            </Select>
-          )}
-        />
-        {errors.bankAccountType && (
-          <span className="text-sm text-red-500">
-            {errors.bankAccountType.message}
-          </span>
-        )}
-      </div>
+      <InputField
+        name="bankAccountType"
+        register={register}
+        label="Tipo de Conta"
+        formErrors={errors}
+        required
+        placeholder="Ex: Checking ou Savings"
+      />
       <InputField
         name="pixKey"
         register={register}

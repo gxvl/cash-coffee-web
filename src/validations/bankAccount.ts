@@ -19,9 +19,9 @@ export const BankAccountFormSchema = z.object({
     .string()
     .min(1, { message: "O dígito da conta é obrigatório." }),
 
-  bankAccountType: z.enum(["Corrente", "Poupança"], {
-    message: "Selecione um tipo de conta válido."
-  }),
+  bankAccountType: z
+    .string()
+    .min(1, { message: "O tipo de conta é obrigatório." }),
   pixKey: z.string().optional()
 });
 
