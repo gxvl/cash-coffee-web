@@ -54,23 +54,15 @@ export default function StepFive({
       }
     };
 
-    const finalUserData = {
+    const finalUserData: UserDTO = {
       ...userData,
-      ...userDTO,
-      dateOfBirth: "",
-      cpf: "",
-      address: {
-        ...userData.Address,
-        latitude: -23.561414,
-        longitude: -46.655881
-      },
-      transferSettings: {
-        ...userData.TransferSettings,
-        transferStatementDescriptor: `CASHCOFFEE*${userData.Alias.toUpperCase()}`
-      },
-      bankAccount: {
+      BankAccount: {
         ...userDTO.BankAccount!,
         PixKey: data.pixKey || ""
+      },
+      TransferSettings: {
+        ...userData.TransferSettings,
+        TransferStatementDescriptor: `CASHCOFFEE*${userData.Alias.toUpperCase()}`
       }
     };
 
