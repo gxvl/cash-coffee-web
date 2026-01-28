@@ -1,6 +1,11 @@
 import axios from "axios";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+// Em produção (Vercel), usa o proxy configurado em vercel.json
+// Em desenvolvimento, usa a variável de ambiente
+const API_URL =
+  process.env.NODE_ENV === "production"
+    ? "/api/v1" // Usa o proxy do Vercel
+    : process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1";
 
 const api = axios.create({
   baseURL: API_URL,
