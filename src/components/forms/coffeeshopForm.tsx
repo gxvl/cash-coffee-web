@@ -102,13 +102,19 @@ export default function CoffeeshopFormComponent() {
     }
   };
 
+  // Remove máscara do CNPJ: "12.345.678/0001-90" -> "12345678000190"
+  const unmaskCNPJ = (cnpj?: string): string => {
+    if (!cnpj) return "";
+    return cnpj.replace(/\D/g, "");
+  };
+
   const onSubmit = (data: CoffeeshopForm) => {
     if (!user) return;
 
     const updatedUser = {
       ...user,
       Name: data.coffeeshopName,
-      CNPJ: data.cnpj,
+      CNPJ: unmaskCNPJ(data.cnpj),
       Email: data.email,
       PhoneNumber: data.phoneNumber,
       Address: {

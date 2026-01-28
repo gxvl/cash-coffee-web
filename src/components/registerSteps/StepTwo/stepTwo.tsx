@@ -26,11 +26,17 @@ export default function StepTwo({
     resolver: zodResolver(SignUp2FormSchema)
   });
 
+  // Remove máscara do CNPJ: "12.345.678/0001-90" -> "12345678000190"
+  const unmaskCNPJ = (cnpj?: string): string => {
+    if (!cnpj) return "";
+    return cnpj.replace(/\D/g, "");
+  };
+
   const onSubmit = (data: SignUp2Form) => {
     const userDTO: Partial<UserDTO> = {
       Alias: data.alias,
       Name: data.name,
-      CNPJ: data.cnpj,
+      CNPJ: unmaskCNPJ(data.cnpj),
       Email: data.email,
       Password: data.password,
       UserType: 2,
