@@ -23,5 +23,5 @@ export default function PublicLayout({
   }, [isAuthenticated, loading, router]);
 
   // Se o usuário não estiver autenticado, permita que ele veja o conteúdo público.
-  return <main>{children}</main>;
+  return <main className="lg:px-44 xl:px-64">{children}</main>;
 }

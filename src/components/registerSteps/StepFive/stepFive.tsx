@@ -10,6 +10,7 @@ import { toast } from "sonner";
 
 import { UserDTO } from "@/common/entities/user";
 import InputField from "@/components/InputField/inputField";
+import SelectField from "@/components/SelectField/selectField";
 import { Button } from "@/components/ui/button";
 import { createUser } from "@/services/userService";
 import {
@@ -33,6 +34,7 @@ export default function StepFive({
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isValid }
   } = useForm<BankAccountForm>({
     mode: "all",
@@ -42,6 +44,16 @@ export default function StepFive({
 
   const onSubmit = async (data: BankAccountForm) => {
     setLoading(true);
+
+    // Converter tipo de conta de português para inglês
+    const bankAccountTypeMap: Record<string, string> = {
+      Corrente: "checking",
+      Poupança: "savings"
+    };
+
+    const bankAccountTypeInEnglish =
+      bankAccountTypeMap[data.bankAccountType] || data.bankAccountType;
+
     const userDTO: Partial<UserDTO> = {
       BankAccount: {
         BankCode: data.bankCode,
@@ -49,7 +61,7 @@ export default function StepFive({
         BankBranchCheckDigit: data.bankBranchCheckDigit,
         BankAccountNumber: data.bankAccountNumber,
         BankAccountCheckDigit: data.bankAccountCheckDigit,
-        BankAccountType: data.bankAccountType,
+        BankAccountType: bankAccountTypeInEnglish,
         PixKey: data.pixKey ?? ""
       }
     };
@@ -163,13 +175,17 @@ export default function StepFive({
           placeholder="Dígito"
         />
       </div>
-      <InputField
+      <SelectField
         name="bankAccountType"
-        register={register}
+        setValue={setValue}
         label="Tipo de Conta"
         formErrors={errors}
         required
-        placeholder="Ex: Checking ou Savings"
+        placeholder="Selecione o tipo de conta"
+        options={[
+          { value: "Corrente", label: "Conta Corrente" },
+          { value: "Poupança", label: "Conta Poupança" }
+        ]}
       />
       <InputField
         name="pixKey"

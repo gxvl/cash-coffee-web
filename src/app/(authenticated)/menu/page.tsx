@@ -33,7 +33,7 @@ export default function MenuPage() {
 
   const { data: categoriesList, isLoading: loadingCategories } =
     useGetAllUserCategories(userId || "");
-
+  console.log(categoriesList);
   const router = useRouter();
 
   return (
@@ -104,13 +104,24 @@ export default function MenuPage() {
               ))}
         </div>
       )}
-      <div className="fixed bottom-0 flex h-[20vh] w-full justify-center gap-2 py-4 backdrop-blur-md">
-        <Button onClick={() => router.push("/menu/create-product")}>
-          Cadastrar produto
-        </Button>
-        <Button onClick={() => router.push("/menu/create-category")}>
-          Criar categoria
-        </Button>
+      <div className="fixed bottom-0 flex h-[20vh] w-full flex-col items-center justify-center gap-2 py-4 backdrop-blur-md">
+        {!categoriesList && (
+          <p className="text-center text-sm font-medium text-[#AD4C24]">
+            Você precisa criar pelo menos uma categoria antes de cadastrar um
+            produto
+          </p>
+        )}
+        <div className="flex gap-2">
+          <Button
+            disabled={categoriesList ? categoriesList.length === 0 : true}
+            onClick={() => router.push("/menu/create-product")}
+          >
+            Cadastrar produto
+          </Button>
+          <Button onClick={() => router.push("/menu/create-category")}>
+            Criar categoria
+          </Button>
+        </div>
       </div>
     </main>
   );
