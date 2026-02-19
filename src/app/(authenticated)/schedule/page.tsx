@@ -102,6 +102,82 @@ export default function SchedulePage() {
       return;
     }
 
+    // Validar horários
+    for (const day of schedule) {
+      const dayName =
+        daysOfWeek.find((d) => d.dayWeek === day.dayWeek)?.name || "Dia";
+
+      // Validar período da manhã
+      if (day.openHourAm && day.closeHourAm) {
+        const openAm = day.openHourAm.hour * 60 + day.openHourAm.minute;
+        const closeAm = day.closeHourAm.hour * 60 + day.closeHourAm.minute;
+
+        if (closeAm <= openAm) {
+          toast.error(
+            `${dayName}: Horário de fechamento da manhã deve ser posterior ao de abertura`
+          );
+          return;
+        }
+      }
+
+      // Validar período da tarde
+      if (day.openHourPm && day.closeHourPm) {
+        const openPm = day.openHourPm.hour * 60 + day.openHourPm.minute;
+        const closePm = day.closeHourPm.hour * 60 + day.closeHourPm.minute;
+
+        if (closePm <= openPm) {
+          toast.error(
+            `${dayName}: Horário de fechamento da tarde deve ser posterior ao de abertura`
+          );
+          return;
+        }
+      }
+
+      // Se não fecha para almoço, validar que a tarde começa depois da manhã
+      if (!closedLunch && day.closeHourAm && day.openHourPm) {
+        const closeAm = day.closeHourAm.hour * 60 + day.closeHourAm.minute;
+        const openPm = day.openHourPm.hour * 60 + day.openHourPm.minute;
+
+        if (openPm <= closeAm) {
+          toast.error(
+            `${dayName}: Horário de abertura da tarde deve ser posterior ao fechamento da manhã`
+          );
+          return;
+        }
+      }
+
+      // Validar que pelo menos um período está completo
+      const hasCompleteAm = day.openHourAm && day.closeHourAm;
+      const hasCompletePm = day.openHourPm && day.closeHourPm;
+      const hasIncompleteAm =
+        (day.openHourAm && !day.closeHourAm) ||
+        (!day.openHourAm && day.closeHourAm);
+      const hasIncompletePm =
+        (day.openHourPm && !day.closeHourPm) ||
+        (!day.openHourPm && day.closeHourPm);
+
+      if (hasIncompleteAm) {
+        toast.error(
+          `${dayName}: Complete o horário da manhã (abertura e fechamento)`
+        );
+        return;
+      }
+
+      if (hasIncompletePm) {
+        toast.error(
+          `${dayName}: Complete o horário da tarde (abertura e fechamento)`
+        );
+        return;
+      }
+
+      if (!hasCompleteAm && !hasCompletePm) {
+        toast.error(
+          `${dayName}: Configure pelo menos um período (manhã ou tarde)`
+        );
+        return;
+      }
+    }
+
     const hasExistingData =
       openingHours &&
       openingHours.daysWeekOpeningHours &&

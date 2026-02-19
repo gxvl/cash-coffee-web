@@ -3,16 +3,16 @@
 import { useEffect, useRef, useState } from "react";
 
 import {
+  BarChart3,
+  BookOpenText,
+  ClipboardList,
+  Clock,
   Coffee,
+  LogOut,
   Plus,
   Settings,
-  ClipboardList,
-  BookOpenText,
-  Star,
-  Clock,
-  BarChart3,
   Settings2,
-  LogOut
+  Star
 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -232,11 +232,11 @@ export default function HomePage() {
           </h3>
         </div>
       </div>
-      <div className="mt-4 flex flex-col gap-3">
+      <div className="mt-4 flex flex-col items-center justify-center gap-3">
         {menu.map((item) => (
           <Button
             onClick={() => router.push(item.link)}
-            className="mx-6 py-8"
+            className="mx-6 w-[90%] py-8 xl:w-[50%]"
             key={item.name}
           >
             <div className="flex items-center gap-2">

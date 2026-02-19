@@ -104,7 +104,7 @@ export default function MenuPage() {
               ))}
         </div>
       )}
-      <div className="fixed bottom-0 flex h-[20vh] w-full flex-col items-center justify-center gap-2 py-4 backdrop-blur-md">
+      <div className="fixed bottom-20 z-[60] flex h-[12vh] w-full flex-col items-center justify-center gap-2 py-4 backdrop-blur-md md:bottom-0">
         {!categoriesList && (
           <p className="text-center text-sm font-medium text-[#AD4C24]">
             Você precisa criar pelo menos uma categoria antes de cadastrar um
